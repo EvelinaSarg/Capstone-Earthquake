@@ -5,11 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
 
-
-
-# Streamlit app layout
 st.title('Earthquake Data Viewer')
-
 # Date input
 start_date = st.date_input('Start date')
 end_date = st.date_input('End date')
@@ -37,8 +33,8 @@ if st.button('Show Map'):
     # Convert to DataFrame for Streamlit map
     df = pd.DataFrame(places)
     st.map(df)
+
 # Set up database connection
- 
 db_user = st.secrets['DB_USER']
 db_password = st.secrets['DB_PASSWORD']
 db_host = st.secrets['DB_HOST']
