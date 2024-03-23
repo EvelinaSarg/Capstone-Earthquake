@@ -39,15 +39,12 @@ if st.button('Show Data'):
     st.map(df)
 # Set up database connection
 load_dotenv() 
-db_user = os.getenv('DB_USER')
-print(db_user)
-db_password = os.getenv('DB_PASSWORD')
-db_host = os.getenv('DB_HOST')
-db_port = 5432
-db_name = os.getenv('DB_NAME')
-db_table = os.getenv('DB_TABLE')
+db_user = st.secrets['DB_USER']
+db_password = st.secrets['DB_PASSWORD']
+db_host = st.secrets['DB_HOST']
+db_name = st.secrets['DB_NAME']
+db_table = st.secrets['DB_TABLE']
 # Streamlit app title
-
 st.title('Earthquake Data Visualization')
 
 # Function to load data from the database
