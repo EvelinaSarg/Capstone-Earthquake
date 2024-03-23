@@ -30,7 +30,7 @@ def extract_places(data):
     return places
 
 # Display data on a map
-if st.button('Show Data'):
+if st.button('Show Map'):
     data = get_data(start_date, end_date)
     places = extract_places(data)
 
