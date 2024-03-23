@@ -4,4 +4,4 @@ pandas
 matplotlib
 sqlalchemy
 python-dotenv
-PyPI
+psycopg2-binary
