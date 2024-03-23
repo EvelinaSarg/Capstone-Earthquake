@@ -3,3 +3,4 @@ requests
 pandas
 matplotlib
 sqlalchemy
+python-dotenv
