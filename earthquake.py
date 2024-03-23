@@ -1,11 +1,9 @@
 
 import streamlit as st
 import requests
-import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
-import os
 from dotenv import load_dotenv
 
 
