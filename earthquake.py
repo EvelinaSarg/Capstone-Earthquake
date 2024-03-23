@@ -83,15 +83,4 @@ if not data.empty:
 else:
     st.write('No data available to display.')
 
-    # Assuming 'date' and 'earthquakes' are columns in your table
-    fig, ax = plt.subplots()
-    ax.plot(data['date'], data['earthquakes'], marker='o')
-    ax.set_title('Number of Earthquakes Over Time')
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Number of Earthquakes')
-    ax.grid(True)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
 
-    # Display the plot in Streamlit
-    st.pyplot(fig)
