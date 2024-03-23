@@ -4,4 +4,3 @@ pandas
 matplotlib
 sqlalchemy
 python-dotenv
-os
