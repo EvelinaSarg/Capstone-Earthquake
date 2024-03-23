@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
-#from dotenv import load_dotenv
+
 
 
 # Streamlit app layout
@@ -38,13 +38,13 @@ if st.button('Show Data'):
     df = pd.DataFrame(places)
     st.map(df)
 # Set up database connection
-#load_dotenv() 
+ 
 db_user = st.secrets['DB_USER']
 db_password = st.secrets['DB_PASSWORD']
 db_host = st.secrets['DB_HOST']
 db_name = st.secrets['DB_NAME']
 db_table = st.secrets['DB_TABLE']
-db_port = 5432
+db_port = st.secrets['DB_PORT']
 # Streamlit app title
 st.title('Earthquake Data Visualization')
 
