@@ -9,13 +9,12 @@ cur = None
 try:
     # Connecting to PostgreSQL
     load_dotenv()
-    print('hello')
-    conn = psycopg2.connect( db_user = os.getenv('DB_USER'),
-    db_password = os.getenv('DB_PASSWORD'),
-    db_host = os.getenv('DB_HOST'),
-    db_port = os.getenv('DB_PORT'),
-    db_name = os.getenv('DB_NAME'),
-    db_table = os.getenv('DB_TABLE'))
+    conn = psycopg2.connect( user = os.getenv('DB_USER'),
+    password = os.getenv('DB_PASSWORD'),
+    host = os.getenv('DB_HOST'),
+    port = 5432,
+    dbname  = os.getenv('DB_NAME'),
+    table = os.getenv('DB_TABLE'))
     
     cur = conn.cursor()
     
@@ -23,7 +22,6 @@ try:
     # Fetching earthquake data
     url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-03-22&endtime=2024-03-23"
     response = requests.get(url)
-    print(response)
     
     # Checking response status
     if response.status_code != 200:
