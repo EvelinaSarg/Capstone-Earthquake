@@ -10,13 +10,13 @@ cur = None
 try:
     
     # Connecting to PostgreSQL
-    #load_dotenv()
-    conn = psycopg2.connect(
-    host = 'data-sandbox.c1tykfvfhpit.eu-west-2.rds.amazonaws.com',
-    database = 'pagila',
-    user = 'de_evsa',
-    password = 'guisities',
-    port = 5432)
+    load_dotenv()
+    conn = psycopg2.connect( db_user = os.getenv('DB_USER'),
+    db_password = os.getenv('DB_PASSWORD'),
+    db_host = os.getenv('DB_HOST'),
+    db_port = os.getenv('DB_PORT'),
+    db_name = os.getenv('DB_NAME'),
+    db_table = os.getenv('DB_TABLE')
 
     cur = conn.cursor()
     
