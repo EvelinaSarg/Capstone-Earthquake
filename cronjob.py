@@ -4,10 +4,9 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
 
-
+conn= None
+cur = None
 try:
-    conn= None
-    cur = None
     # Connecting to PostgreSQL
     load_dotenv()
     print('hello')
