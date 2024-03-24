@@ -6,7 +6,8 @@ import os
 
 
 try:
-    
+    conn= None
+    cur = None
     # Connecting to PostgreSQL
     load_dotenv()
     print('hello')
