@@ -1,11 +1,14 @@
 import psycopg2
 import requests
-from datetime import datetime, timezone
+import datetime
 from dotenv import load_dotenv
 import os
 
 conn= None
 cur = None
+start_date=  datetime.date.today() - datetime.timedelta(days=2)
+end_date = datetime.date.today() - datetime.timedelta(days=1)
+
 try:
     # Connecting to PostgreSQL
     load_dotenv()
@@ -20,21 +23,23 @@ try:
     
 
     # Fetching earthquake data
-    url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-03-22&endtime=2024-03-23"
+    url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date.strftime('%Y-%m-%d')}&endtime={end_date.strftime('%Y-%m-%d')}"
+    print(url)
     response = requests.get(url)
-    
+    print(response)
     # Checking response status
     if response.status_code != 200:
         raise Exception(f"Failed to fetch data. Status code: {response.status_code}")
-
+    
+    print('hello')
     data = response.json()
     timestamp = data['features'][0]['properties']['time'] / 1000
-    date = datetime.fromtimestamp(timestamp, timezone.utc).date()
+    date = datetime.datetime.fromtimestamp(timestamp, datetime.timezone.utc).date()
     count = len(data['features'])
 
     # Inserting data into the database
     sql_query = '''INSERT INTO evsa_earthquakes (date, earthquakes) VALUES (%s, %s)'''
-    cur.execute(sql_query, (date, count))
+    cur.execute(sql_query, (end_date, count))
     conn.commit()
 
     print("Data inserted successfully.")
