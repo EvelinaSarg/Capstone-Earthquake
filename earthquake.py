@@ -11,10 +11,13 @@ start_date = st.date_input('Start date')
 end_date = st.date_input('End date')
 
 # Function to make API call
-def get_data(start_date, end_date):
-    url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
-    response = requests.get(url)
-    return response.json()
+if start_date > end_date:
+    st.error('Error: Start date must be before the end date.')
+else:
+    def get_data(start_date, end_date):
+        url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
+        response = requests.get(url)
+        return response.json()
 
 # Function to extract places and coordinates
 def extract_places(data):
