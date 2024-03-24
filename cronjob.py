@@ -4,17 +4,18 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
 
-
+conn = None
+cur = None
 try:
     # Connecting to PostgreSQL
     load_dotenv()
+    print('hello')
     conn = psycopg2.connect( db_user = os.getenv('DB_USER'),
     db_password = os.getenv('DB_PASSWORD'),
     db_host = os.getenv('DB_HOST'),
     db_port = os.getenv('DB_PORT'),
     db_name = os.getenv('DB_NAME'),
-    db_table = os.getenv('DB_TABLE')
-    )
+    db_table = os.getenv('DB_TABLE'))
     
     cur = conn.cursor()
     
@@ -49,6 +50,9 @@ except Exception as e:
     print("An unexpected error occurred:", e)
     
 finally:
-    # Close database connection
-    if conn:
+    # Closing database connection
+    if cur is not None:
+        cur.close()
+    if conn is not None:
         conn.close()
+
