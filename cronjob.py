@@ -16,8 +16,7 @@ try:
     db_host = os.getenv('DB_HOST'),
     db_port = os.getenv('DB_PORT'),
     db_name = os.getenv('DB_NAME'),
-    db_table = os.getenv('DB_TABLE')
-    )
+    db_table = os.getenv('DB_TABLE'))
     
     cur = conn.cursor()
     
