@@ -4,24 +4,27 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
 
+conn = None
+cur = None
 
 try:
-    # Connecting to PostgreSQL
-    load_dotenv()
-    conn = psycopg2.connect( db_user = os.getenv('DB_USER'),
-    db_password = os.getenv('DB_PASSWORD'),
-    db_host = os.getenv('DB_HOST'),
-    db_port = os.getenv('DB_PORT'),
-    db_name = os.getenv('DB_NAME'),
-    db_table = os.getenv('DB_TABLE')
-    )
     
+    # Connecting to PostgreSQL
+    #load_dotenv()
+    conn = psycopg2.connect(
+    host = 'data-sandbox.c1tykfvfhpit.eu-west-2.rds.amazonaws.com',
+    database = 'pagila',
+    user = 'de_evsa',
+    password = 'guisities',
+    port = 5432)
+
     cur = conn.cursor()
     
 
     # Fetching earthquake data
-    url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-03-22&endtime=2024-03-23"
+    url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-03-22&endtime=2024-03-23"
     response = requests.get(url)
+    print(response)
     
     # Checking response status
     if response.status_code != 200:
@@ -47,8 +50,10 @@ except requests.RequestException as e:
     
 except Exception as e:
     print("An unexpected error occurred:", e)
-    
+
 finally:
-    # Close database connection
-    if conn:
+    # Closing database connection
+    if cur is not None:
+        cur.close()
+    if conn is not None:
         conn.close()
