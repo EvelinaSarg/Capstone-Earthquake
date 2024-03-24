@@ -4,9 +4,9 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
 
-conn = None
-cur = None
+
 try:
+    
     # Connecting to PostgreSQL
     load_dotenv()
     print('hello')
@@ -15,14 +15,16 @@ try:
     db_host = os.getenv('DB_HOST'),
     db_port = os.getenv('DB_PORT'),
     db_name = os.getenv('DB_NAME'),
-    db_table = os.getenv('DB_TABLE'))
+    db_table = os.getenv('DB_TABLE')
+    )
     
     cur = conn.cursor()
     
 
     # Fetching earthquake data
-    url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-03-22&endtime=2024-03-23"
+    url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-03-22&endtime=2024-03-23"
     response = requests.get(url)
+    print(response)
     
     # Checking response status
     if response.status_code != 200:
@@ -33,7 +35,7 @@ try:
     date = datetime.fromtimestamp(timestamp, timezone.utc).date()
     count = len(data['features'])
 
-    # Insert into the database
+    # Inserting data into the database
     sql_query = '''INSERT INTO evsa_earthquakes (date, earthquakes) VALUES (%s, %s)'''
     cur.execute(sql_query, (date, count))
     conn.commit()
@@ -48,7 +50,7 @@ except requests.RequestException as e:
     
 except Exception as e:
     print("An unexpected error occurred:", e)
-    
+
 finally:
     # Closing database connection
     if cur is not None:
