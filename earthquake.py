@@ -4,21 +4,20 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
-from dotenv import load_dotenv
 
-
-# Streamlit app layout
 st.title('Earthquake Data Viewer')
-
 # Date input
 start_date = st.date_input('Start date')
 end_date = st.date_input('End date')
 
 # Function to make API call
-def get_data(start_date, end_date):
-    url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
-    response = requests.get(url)
-    return response.json()
+if start_date > end_date:
+    st.error('Error: Start date must be before the end date.')
+else:
+    def get_data(start_date, end_date):
+        url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
+        response = requests.get(url)
+        return response.json()
 
 # Function to extract places and coordinates
 def extract_places(data):
@@ -30,24 +29,22 @@ def extract_places(data):
     return places
 
 # Display data on a map
-if st.button('Show Data'):
+if st.button('Show Map'):
     data = get_data(start_date, end_date)
     places = extract_places(data)
 
     # Convert to DataFrame for Streamlit map
     df = pd.DataFrame(places)
     st.map(df)
-# Set up database connection
-load_dotenv() 
-db_user = os.getenv('DB_USER')
-print(db_user)
-db_password = os.getenv('DB_PASSWORD')
-db_host = os.getenv('DB_HOST')
-db_port = 5432
-db_name = os.getenv('DB_NAME')
-db_table = os.getenv('DB_TABLE')
-# Streamlit app title
 
+# Set up database connection
+db_user = st.secrets['DB_USER']
+db_password = st.secrets['DB_PASSWORD']
+db_host = st.secrets['DB_HOST']
+db_name = st.secrets['DB_NAME']
+db_table = st.secrets['DB_TABLE']
+db_port = st.secrets['DB_PORT']
+# Streamlit app title
 st.title('Earthquake Data Visualization')
 
 # Function to load data from the database
@@ -85,15 +82,4 @@ if not data.empty:
 else:
     st.write('No data available to display.')
 
-    # Assuming 'date' and 'earthquakes' are columns in your table
-    fig, ax = plt.subplots()
-    ax.plot(data['date'], data['earthquakes'], marker='o')
-    ax.set_title('Number of Earthquakes Over Time')
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Number of Earthquakes')
-    ax.grid(True)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
 
-    # Display the plot in Streamlit
-    st.pyplot(fig)
