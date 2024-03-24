@@ -12,7 +12,7 @@ try:
     conn = psycopg2.connect( user = os.getenv('DB_USER'),
     password = os.getenv('DB_PASSWORD'),
     host = os.getenv('DB_HOST'),
-    port = 5432,
+    port = int(os.getenv('DB_PORT')),
     dbname  = os.getenv('DB_NAME'),
     table = os.getenv('DB_TABLE'))
     
