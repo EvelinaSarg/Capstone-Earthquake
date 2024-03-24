@@ -35,7 +35,7 @@ try:
     date = datetime.fromtimestamp(timestamp, timezone.utc).date()
     count = len(data['features'])
 
-    # Insert into the database
+    # Inserting data into the database
     sql_query = '''INSERT INTO evsa_earthquakes (date, earthquakes) VALUES (%s, %s)'''
     cur.execute(sql_query, (date, count))
     conn.commit()
