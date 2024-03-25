@@ -16,8 +16,7 @@ try:
     password = os.getenv('DB_PASSWORD'),
     host = os.getenv('DB_HOST'),
     port = int(os.getenv('DB_PORT')),
-    dbname  = os.getenv('DB_NAME'),
-    table = os.getenv('DB_TABLE'))
+    dbname  = os.getenv('DB_NAME'))
     
     cur = conn.cursor()
     
@@ -36,7 +35,7 @@ try:
     count = data['metadata']['count']
 
     # Inserting data into the database
-    sql_query = '''INSERT INTO evsa_earthquakes (date, earthquakes) VALUES (%s, %s)'''
+    sql_query = f'''INSERT INTO {os.getenv('DB_TABLE')} (date, earthquakes) VALUES (%s, %s)'''
     cur.execute(sql_query, (start_date, count))
     conn.commit()
 
