@@ -55,14 +55,6 @@ def load_data():
     data = pd.read_sql(query, engine)
     return data
 
-# Button to refresh data
-if st.button('Refresh Data'):
-    try:
-        st.caching.clear_cache()  # Update this line based on the available caching function
-    except AttributeError:
-        pass  # Ignore if caching function doesn't exist
-    st.experimental_rerun()  # Rerun the Streamlit app to update the plot
-
 # Load the data
 data = load_data()
 
@@ -82,5 +74,12 @@ if not data.empty:
     st.pyplot(fig)
 else:
     st.write('No data available to display.')
+# Button to refresh data
+if st.button('Refresh Data'):
+    try:
+        st.caching.clear_cache()  # Update this line based on the available caching function
+    except AttributeError:
+        pass  # Ignore if caching function doesn't exist
+    st.experimental_rerun()  # Rerun the Streamlit app to update the plot
 
 
