@@ -6,8 +6,8 @@ import os
 
 conn= None
 cur = None
-start_date=  datetime.date.today() - datetime.timedelta(days=2)
-end_date = datetime.date.today() - datetime.timedelta(days=1)
+start_date=  datetime.date.today() - datetime.timedelta(days=1)
+end_date = datetime.date.today()
 
 try:
     # Connecting to PostgreSQL
@@ -39,7 +39,7 @@ try:
 
     # Inserting data into the database
     sql_query = '''INSERT INTO evsa_earthquakes (date, earthquakes) VALUES (%s, %s)'''
-    cur.execute(sql_query, (end_date, count))
+    cur.execute(sql_query, (start_date, count))
     conn.commit()
 
     print("Data inserted successfully.")
