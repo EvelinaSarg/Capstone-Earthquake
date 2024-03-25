@@ -5,12 +5,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
 
-st.title('Earthquake Data Viewer')
+st.title('Global Earthquake Activity Map')
 # Date input
 start_date = st.date_input('Start date')
 end_date = st.date_input('End date')
 
-# Function to make API call
+# API call
 if start_date > end_date:
     st.error('Error: Start date must be before the end date.')
 else:
@@ -44,8 +44,9 @@ db_host = st.secrets['DB_HOST']
 db_name = st.secrets['DB_NAME']
 db_table = st.secrets['DB_TABLE']
 db_port = st.secrets['DB_PORT']
-# Streamlit app title
-st.title('Earthquake Data Visualization')
+
+
+st.title('Trends in Earthquake Frequency')
 
 # Function to load data from the database
 def load_data():
@@ -65,7 +66,7 @@ if st.button('Refresh Data'):
 # Load the data
 data = load_data()
 
-# Plot the data if it's loaded
+# Plot the data 
 if not data.empty:
  
     fig, ax = plt.subplots()

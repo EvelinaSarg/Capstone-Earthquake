@@ -24,14 +24,11 @@ try:
 
     # Fetching earthquake data
     url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date.strftime('%Y-%m-%d')}&endtime={end_date.strftime('%Y-%m-%d')}"
-    print(url)
     response = requests.get(url)
-    print(response)
     # Checking response status
     if response.status_code != 200:
         raise Exception(f"Failed to fetch data. Status code: {response.status_code}")
     
-    print('hello')
     data = response.json()
     timestamp = data['features'][0]['properties']['time'] / 1000
     date = datetime.datetime.fromtimestamp(timestamp, datetime.timezone.utc).date()
