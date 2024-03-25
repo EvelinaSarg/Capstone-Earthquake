@@ -32,7 +32,8 @@ try:
     data = response.json()
     timestamp = data['features'][0]['properties']['time'] / 1000
     date = datetime.datetime.fromtimestamp(timestamp, datetime.timezone.utc).date()
-    count = len(data['features'])
+    #count = len(data['features'])
+    count = data['metadat']['count']
 
     # Inserting data into the database
     sql_query = '''INSERT INTO evsa_earthquakes (date, earthquakes) VALUES (%s, %s)'''
