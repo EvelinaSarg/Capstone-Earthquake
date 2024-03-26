@@ -50,7 +50,7 @@ def render_map(df):
         data=df,
         get_position='[longitude, latitude]',
         get_radius='magnitude * 50000',  # Adjust the size based on magnitude
-        get_color='[255, 165, 0, 255]',  # RGBA color
+        get_color='[180, 0, 200, 140]',  # RGBA color
         pickable=True,
         auto_highlight=True,
     )
