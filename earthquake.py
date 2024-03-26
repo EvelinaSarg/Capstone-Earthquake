@@ -76,10 +76,6 @@ else:
     st.write('No data available to display.')
 # Button to refresh data
 if st.button('Refresh Data'):
-    try:
-        st.caching.clear_cache()  # Update this line based on the available caching function
-    except AttributeError:
-        pass  # Ignore if caching function doesn't exist
-    st.experimental_rerun()  # Rerun the Streamlit app to update the plot
+    st.experimental_rerun()  
 
 
