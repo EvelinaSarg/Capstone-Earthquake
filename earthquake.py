@@ -73,25 +73,19 @@ def render_map(df):
     st.pydeck_chart(r)
     
     
-start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1))
-end_date = st.date_input('End date', value=datetime.now(), min_value=start_date, max_value=start_date + timedelta(days=50))
+start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime(2020, 1, 1),  max_value=datetime.now()) 
+end_date = st.date_input('End date', value=datetime.now(), min_value=datetime(2020, 1, 1),  max_value=datetime.now())
 
 if (end_date - start_date).days > 50:
     st.error('The date range must not exceed 50 days.')
+if end_date<start_date:
+    st.warning("No data available.") 
 else:
     # Fetch data and prepare the map
     data = get_data(start_date, end_date)
     earthquakes = extract_data(data)
     df = pd.DataFrame(earthquakes)
-    render_map(df)                           # Render the map on first load
-
-# Button to update the map based on new input
-if st.button('Update Map'):
-    if (end_date - start_date).days <= 50 and start_date!=end_date:
-        data = get_data(start_date, end_date)
-        earthquakes = extract_data(data)
-        df = pd.DataFrame(earthquakes)
-        render_map(df)  # Update and render the map based on the new input
+    render_map(df)             
 
 # Set up database connection
 db_user = st.secrets['DB_USER']
