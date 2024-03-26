@@ -4,11 +4,17 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
+from datetime import datetime   #added
 
 st.title('Global Earthquake Activity Map')
 # Date input
-start_date = st.date_input('Start date')
-end_date = st.date_input('End date')
+
+current_year = datetime.now().year #added
+start_date = st.date_input('Start date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
+end_date = st.date_input('End date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
+
+if (end_date - start_date).days > 50: #added
+    st.error('The date range must not exceed 50 days.')
 
 # API call
 if start_date > end_date:
