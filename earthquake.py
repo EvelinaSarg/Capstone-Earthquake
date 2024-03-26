@@ -25,8 +25,7 @@ def extract_places(data):
     for item in data['features']:
         place = item['properties']['place']
         longitude, latitude = item['geometry']['coordinates'][0:2]
-        mag = item['properties']['mag']
-        places.append({'place': place, 'latitude': latitude, 'longitude': longitude, 'mag': mag})
+        places.append({'place': place, 'latitude': latitude, 'longitude': longitude})
     return places
 
 # Display data on a map
