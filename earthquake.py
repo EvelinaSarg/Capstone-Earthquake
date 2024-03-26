@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
-from datetime import datetime, timedelta #added
+from datetime import datetime, timedelta 
 import pydeck as pdk                                            
 
 st.title('Global Earthquake Activity Map')
@@ -37,7 +37,7 @@ def extract_data(data):
 # Function to render the map
 def render_map(df):
     if df.empty:
-        st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11')) #added
+        st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
         st.warning('No earthquake data available for the selected date range.')
         return
     # Define the pydeck layer
