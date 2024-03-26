@@ -4,44 +4,96 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
-from datetime import datetime   #added
+from datetime import datetime, timedelta #added
+import pydeck as pdk                                              #added
 
 st.title('Global Earthquake Activity Map')
 # Date input
+#current_year = datetime.now().year #added
+#tart_date = st.date_input('Start date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
+#end_date = st.date_input('End date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
+start_date = datetime.now() - timedelta(days=1)
+end_date = datetime.now()
+#if (end_date - start_date).days > 50: #added
+    #st.error('The date range must not exceed 50 days.')
 
-current_year = datetime.now().year #added
-start_date = st.date_input('Start date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
-end_date = st.date_input('End date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
+# Function to make API call and get data
+def get_data(start_date, end_date):
+    url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
+    response = requests.get(url)
+    return response.json()
 
-if (end_date - start_date).days > 50: #added
+# Function to extract places, coordinates, and magnitudes
+def extract_data(data):
+    earthquakes = []
+    for feature in data['features']:
+        place = feature['properties']['place']
+        longitude, latitude = feature['geometry']['coordinates'][0:2]
+        magnitude = feature['properties']['mag']
+        earthquakes.append({
+            'place': place,
+            'magnitude': magnitude,
+            'longitude': longitude,
+            'latitude': latitude
+        })
+    return earthquakes
+
+# Function to render the map
+def render_map(df):
+    if df.empty:
+        st.map(df) #added
+        st.warning('No earthquake data available for the selected date range.')
+        return
+    # Define the pydeck layer
+    layer = pdk.Layer(
+        "ScatterplotLayer",
+        data=df,
+        get_position='[longitude, latitude]',
+        get_radius='magnitude * 50000',  # Adjust the size based on magnitude
+        get_color='[255, 165, 0, 255]',  # RGBA color
+        pickable=True,
+        auto_highlight=True,
+    )
+    # Define the initial view state for pydeck
+    view_state = pdk.ViewState(
+        latitude=df['latitude'].mean(),
+        longitude=df['longitude'].mean(),
+        zoom=1,
+        pitch=0,
+    )
+    r = pdk.Deck(
+        layers=[layer],
+        initial_view_state=view_state,
+        map_style= 'mapbox://styles/mapbox/outdoors-v11',
+        tooltip= {
+        "html": "<b>Place:</b> {place} <br/> <b>Magnitude:</b> {magnitude}",
+        "style": {
+            "backgroundColor": "steelblue",
+            "color": "white"
+        } }                                      
+    )
+
+    # Display the map in Streamlit
+    st.pydeck_chart(r)
+start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1))
+end_date = st.date_input('End date', value=datetime.now(), min_value=start_date, max_value=start_date + timedelta(days=50))
+
+if (end_date - start_date).days > 50:
     st.error('The date range must not exceed 50 days.')
-
-# API call
-if start_date > end_date:
-    st.error('Error: Start date must be before the end date.')
 else:
-    def get_data(start_date, end_date):
-        url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
-        response = requests.get(url)
-        return response.json()
-
-# Function to extract places and coordinates
-def extract_places(data):
-    places = []
-    for item in data['features']:
-        place = item['properties']['place']
-        longitude, latitude = item['geometry']['coordinates'][0:2]
-        places.append({'place': place, 'latitude': latitude, 'longitude': longitude})
-    return places
-
-# Display data on a map
-if st.button('Show Map'):
+    # Fetch data and prepare the map
     data = get_data(start_date, end_date)
-    places = extract_places(data)
+    earthquakes = extract_data(data)
+    df = pd.DataFrame(earthquakes)
+    render_map(df)                           # Render the map on first load
 
-    # Convert to DataFrame for Streamlit map
-    df = pd.DataFrame(places)
-    st.map(df)
+# Button to update the map based on new input
+if st.button('Update Map'):
+    if (end_date - start_date).days <= 50 and start_date!=end_date:
+        data = get_data(start_date, end_date)
+        earthquakes = extract_data(data)
+        df = pd.DataFrame(earthquakes)
+        render_map(df)  # Update and render the map based on the new input
 
 # Set up database connection
 db_user = st.secrets['DB_USER']
@@ -53,7 +105,6 @@ db_port = st.secrets['DB_PORT']
 
 
 st.title('Trends in Earthquake Frequency')
-
 # Function to load data from the database
 def load_data():
     engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
