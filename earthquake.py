@@ -5,17 +5,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
 from datetime import datetime, timedelta #added
-import pydeck as pdk                                              #added
+import pydeck as pdk                                            
 
 st.title('Global Earthquake Activity Map')
 # Date input
-#current_year = datetime.now().year #added
-#tart_date = st.date_input('Start date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
-#end_date = st.date_input('End date', min_value=datetime(2020, 1, 1), max_value=datetime(current_year, 12, 31))
 start_date = datetime.now() - timedelta(days=1)
 end_date = datetime.now()
-#if (end_date - start_date).days > 50: #added
-    #st.error('The date range must not exceed 50 days.')
+
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
