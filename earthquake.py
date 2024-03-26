@@ -41,7 +41,7 @@ def extract_data(data):
 # Function to render the map
 def render_map(df):
     if df.empty:
-        st.map(df) #added
+        st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11')) #added
         st.warning('No earthquake data available for the selected date range.')
         return
     # Define the pydeck layer
@@ -75,6 +75,8 @@ def render_map(df):
 
     # Display the map in Streamlit
     st.pydeck_chart(r)
+    
+    
 start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1))
 end_date = st.date_input('End date', value=datetime.now(), min_value=start_date, max_value=start_date + timedelta(days=50))
 
