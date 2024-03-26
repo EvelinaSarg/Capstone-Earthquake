@@ -34,7 +34,7 @@ def extract_places(data):
 # Display data on a map
 if st.button('Show Map'):
     if start_date > end_date:
-    st.error('Error: Start date must be before the end date.')
+        st.error('Error: Start date must be before the end date.')
 else:
     data = get_data(start_date, end_date)
     places = extract_places(data)
