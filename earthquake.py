@@ -17,13 +17,10 @@ if (end_date - start_date).days > 50: #added
     st.error('The date range must not exceed 50 days.')
 
 # API call
-if start_date > end_date:
-    st.error('Error: Start date must be before the end date.')
-else:
-    def get_data(start_date, end_date):
-        url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
-        response = requests.get(url)
-        return response.json()
+def get_data(start_date, end_date):
+    url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
+    response = requests.get(url)
+    return response.json()
 
 # Function to extract places and coordinates
 def extract_places(data):
@@ -36,6 +33,9 @@ def extract_places(data):
 
 # Display data on a map
 if st.button('Show Map'):
+    if start_date > end_date:
+    st.error('Error: Start date must be before the end date.')
+else:
     data = get_data(start_date, end_date)
     places = extract_places(data)
 
