@@ -15,9 +15,14 @@ end_date = datetime.now()
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
+    if (end_date - start_date).days > 50:
+        raise ValueError("Date range must not exceed 50 days.")
     url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
     response = requests.get(url)
+    if response.status_code != 200:
+        raise ValueError(f"Error fetching data: {response.status_code}")
     return response.json()
+
 
 # Function to extract places, coordinates, and magnitudes
 def extract_data(data):
@@ -76,16 +81,19 @@ def render_map(df):
 start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime(2020, 1, 1),  max_value=datetime.now()) 
 end_date = st.date_input('End date', value=datetime.now(), min_value=datetime(2020, 1, 1),  max_value=datetime.now())
 
-if (end_date - start_date).days > 50:
+if end_date < start_date:
+    st.warning("End date must be after start date.")
+elif (end_date - start_date).days > 50:
     st.error('The date range must not exceed 50 days.')
-if end_date<start_date:
-    st.warning("No data available. Please check the dates") 
 else:
-    # Fetch data and prepare the map
-    data = get_data(start_date, end_date)
-    earthquakes = extract_data(data)
-    df = pd.DataFrame(earthquakes)
-    render_map(df)             
+    try:
+        # Fetch data and prepare the map
+        data = get_data(start_date, end_date)
+        earthquakes = extract_data(data)
+        df = pd.DataFrame(earthquakes)
+        render_map(df)
+    except ValueError as e:
+        st.error(e)         
 
 # Set up database connection
 db_user = st.secrets['DB_USER']
