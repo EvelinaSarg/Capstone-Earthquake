@@ -15,10 +15,21 @@ end_date = datetime.now()
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
+        # Function to make API call and get data
+def get_data(start_date, end_date):
+    try:
         url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
         response = requests.get(url)
         response.raise_for_status()  # Raise an exception for 4XX or 5XX status codes
-        return response.json()
+        data = response.json()
+        if data is None:
+            st.error("No earthquake data available. Please try again later.")
+            st.write(":(")  # Show a sad face
+        return data
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error fetching earthquake data: {e}")
+        st.write(":(")  # Show a sad face
+        return None
 # Function to extract places, coordinates, and magnitudes
 def extract_data(data):
     earthquakes = []
