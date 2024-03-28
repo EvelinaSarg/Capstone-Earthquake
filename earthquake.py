@@ -78,6 +78,7 @@ end_date = st.date_input('End date', value=datetime.now(), min_value=datetime(20
 
 if (end_date - start_date).days > 50:
     st.error('The date range must not exceed 50 days.')
+    st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11')) #added
 if end_date<start_date:
     st.warning("No data available. Please check the dates") 
 else:
