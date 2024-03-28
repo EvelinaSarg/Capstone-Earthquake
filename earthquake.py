@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
-from datetime import datetime, timedelta #added
+from datetime import datetime, timedelta 
 import pydeck as pdk                                            
 
 st.title('Global Earthquake Activity Map')
@@ -15,6 +15,7 @@ end_date = datetime.now()
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
+<<<<<<< HEAD
     if (end_date - start_date).days > 50:
         raise ValueError("Date range must not exceed 50 days.")
     url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
@@ -24,6 +25,21 @@ def get_data(start_date, end_date):
     return response.json()
 
 
+=======
+    try:
+        url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception for 4XX or 5XX status codes
+        data = response.json()
+        if data is None:
+            st.error("No earthquake data available. Please try again later.")
+            st.write(":(")  # Show a sad face
+        return data
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error fetching earthquake data: {e}")
+        st.write(":(")  # Show a sad face
+        return None
+>>>>>>> f6911ea3c05a04220b448f973ea2f900a1b0f30d
 # Function to extract places, coordinates, and magnitudes
 def extract_data(data):
     earthquakes = []
@@ -42,7 +58,7 @@ def extract_data(data):
 # Function to render the map
 def render_map(df):
     if df.empty:
-        st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11')) #added
+        st.pydeck_chart( pdk.Deck(map_style='mapbox://styles/mapbox/outdoors-v11'))
         st.warning('No earthquake data available for the selected date range.')
         return
     # Define the pydeck layer
