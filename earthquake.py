@@ -15,8 +15,6 @@ end_date = datetime.now()
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
-        # Function to make API call and get data
-def get_data(start_date, end_date):
     try:
         url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
         response = requests.get(url)
