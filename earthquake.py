@@ -9,8 +9,8 @@ import pydeck as pdk
 st.title('Global Earthquake Activity Map')
 
 # Date input
-start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime(2020, 1, 1), max_value=datetime.now())
-end_date = st.date_input('End date', value=datetime.now(), min_value=datetime(2020, 1, 1), max_value=datetime.now())
+start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime(2024, 2, 1), max_value=datetime.now())
+end_date = st.date_input('End date', value=datetime.now(), min_value=datetime(2024, 2, 1), max_value=datetime.now())
 
 # Function to make API call and get data
 def get_data(start_date, end_date):
