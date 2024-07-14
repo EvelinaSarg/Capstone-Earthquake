@@ -78,8 +78,8 @@ def render_map(df):
 # Date validation
 if end_date < start_date:
     st.warning("End date must be after start date.")
-elif (end_date - start_date).days > 50:
-    st.error('The date range must not exceed 50 days.')
+elif (end_date - start_date).days > 45:
+    st.error('Event count exceeds 20,000. Please refine your date range.')
 else:
     try:
         # Fetch data and prepare the map
