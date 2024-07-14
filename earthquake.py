@@ -91,10 +91,6 @@ else:
         st.error(e)
 
 
-
-
-
-
 # Set up database connection
 db_user = st.secrets['DB_USER']
 db_password = st.secrets['DB_PASSWORD']
