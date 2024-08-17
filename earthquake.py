@@ -111,7 +111,7 @@ def load_data():
 # Load the data
 data = load_data()
 
-# Plot the data
+# Plot the data.
 if not data.empty:
     fig, ax = plt.subplots()
     ax.plot(data['date'], data['earthquakes'], marker='o')
