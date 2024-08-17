@@ -21,7 +21,7 @@ def get_data(start_date, end_date):
         raise ValueError(f"Error fetching data: {response.status_code}")
     return response.json()
 
-# Function to extract places, coordinates, and magnitudes.
+# Function to extract places, coordinates, and magnitudes
 def extract_data(data):
     earthquakes = []
     for feature in data['features']:
