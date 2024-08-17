@@ -8,12 +8,12 @@ import pydeck as pdk
 
 st.title('Global Earthquake Activity Map')
 
-# Date input
+# Date input.
 start_date = st.date_input('Start date', value=datetime.now() - timedelta(days=1), min_value=datetime(2024, 2, 1), max_value=datetime.now())
 end_date = st.date_input('End date', value=datetime.now(), min_value=datetime(2024, 2, 1), max_value=datetime.now())
 
 
-# Function to make API call and get data
+# Function to make API call and get data.
 def get_data(start_date, end_date):
     url = f"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime={start_date}&endtime={end_date}"
     response = requests.get(url)
@@ -21,7 +21,7 @@ def get_data(start_date, end_date):
         raise ValueError(f"Error fetching data: {response.status_code}")
     return response.json()
 
-# Function to extract places, coordinates, and magnitudes
+# Function to extract places, coordinates, and magnitudes.
 def extract_data(data):
     earthquakes = []
     for feature in data['features']:
