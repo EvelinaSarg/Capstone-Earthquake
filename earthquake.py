@@ -92,41 +92,41 @@ else:
 
 
 # Set up database connection
-db_user = st.secrets['DB_USER']
-db_password = st.secrets['DB_PASSWORD']
-db_host = st.secrets['DB_HOST']
-db_name = st.secrets['DB_NAME']
-db_table = st.secrets['DB_TABLE']
-db_port = st.secrets['DB_PORT']
+#db_user = st.secrets['DB_USER']
+#db_password = st.secrets['DB_PASSWORD']
+#db_host = st.secrets['DB_HOST']
+#db_name = st.secrets['DB_NAME']
+#db_table = st.secrets['DB_TABLE']
+#db_port = st.secrets['DB_PORT']
 
-st.title('Trends in Earthquake Frequency')
+#st.title('Trends in Earthquake Frequency')
 
 # Function to load data from the database
-def load_data():
-    engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
-    query = f'SELECT * FROM {db_table}'
-    data = pd.read_sql(query, engine)
-    return data
+#def load_data():
+    #engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
+    #query = f'SELECT * FROM {db_table}'
+    #data = pd.read_sql(query, engine)
+   # return data
 
 # Load the data
-data = load_data()
+#data = load_data()
 
 # Plot the data.
-if not data.empty:
-    fig, ax = plt.subplots()
-    ax.plot(data['date'], data['earthquakes'], marker='o')
-    ax.set_title('Number of Earthquakes Over Time')
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Number of Earthquakes')
-    ax.grid(True)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
+#if not data.empty:
+    #fig, ax = plt.subplots()
+    #ax.plot(data['date'], data['earthquakes'], marker='o')
+    #ax.set_title('Number of Earthquakes Over Time')
+   # ax.set_xlabel('Date')
+   # ax.set_ylabel('Number of Earthquakes')
+  #  ax.grid(True)
+   # plt.xticks(rotation=45)
+   # plt.tight_layout()
 
     # Display the plot in Streamlit
-    st.pyplot(fig)
-else:
-    st.write('No data available to display.')
+  #  st.pyplot(fig)
+#else:
+    #st.write('No data available to display.')
 
 # Button to refresh data
-if st.button('Refresh Data'):
-    st.experimental_rerun()
+#if st.button('Refresh Data'):
+    #st.experimental_rerun()
